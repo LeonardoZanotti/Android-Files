@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -27,6 +29,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerViewToDoList);
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Toast.makeText(MainActivity.this, "Edit", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+                Toast.makeText(MainActivity.this, "Remove", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        }));
     }
 
     @Override
