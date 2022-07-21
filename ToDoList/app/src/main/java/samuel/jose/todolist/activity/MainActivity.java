@@ -39,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Toast.makeText(MainActivity.this, "Edit", Toast.LENGTH_SHORT).show();
+                ToDo selectedToDo = toDoList.get(position);
+                Intent intent = new Intent(MainActivity.this, AddToDoActivity.class);
+                intent.putExtra("selectedToDo", selectedToDo);
+                startActivity(intent);
             }
 
             @Override

@@ -16,12 +16,17 @@ import samuel.jose.todolist.model.ToDo;
 
 public class AddToDoActivity extends AppCompatActivity {
     private TextInputEditText newToDo;
+    private ToDo currentToDo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_do);
         newToDo = findViewById(R.id.editTextNewTask);
+        currentToDo = (ToDo) getIntent().getSerializableExtra("selectedToDo");
+        if (currentToDo != null) {
+            newToDo.setText(currentToDo.getToDoName());
+        }
     }
 
     @Override
@@ -34,14 +39,35 @@ public class AddToDoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.itemSalvar) {
             ToDoDAO toDoDAO = new ToDoDAO(getApplicationContext());
-            String strNewToDo = newToDo.getText().toString();
-            if (!strNewToDo.isEmpty()) {
-                ToDo toDo = new ToDo();
-                toDo.setToDoName(strNewToDo);
-                toDoDAO.insertToDo(toDo);
-                finish();
+            if (currentToDo != null) {
+                String strNewToDo = newToDo.getText().toString();
+                if (!strNewToDo.isEmpty()) {
+                    ToDo toDo = new ToDo();
+                    toDo.setId(currentToDo.getId());
+                    toDo.setToDoName(strNewToDo);
+                    if (toDoDAO.updateToDo(toDo)) {
+                        Toast.makeText(this, "Task updated", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Error updating task", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "Insert the task", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(this, "Insert the task", Toast.LENGTH_SHORT).show();
+                String strNewToDo = newToDo.getText().toString();
+                if (!strNewToDo.isEmpty()) {
+                    ToDo toDo = new ToDo();
+                    toDo.setToDoName(strNewToDo);
+                    if (toDoDAO.insertToDo(toDo)) {
+                        Toast.makeText(this, "Task created", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Error creating task", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "Insert the task", Toast.LENGTH_SHORT).show();
+                }
             }
         }
         return super.onOptionsItemSelected(item);

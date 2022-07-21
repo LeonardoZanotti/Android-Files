@@ -35,7 +35,17 @@ public class ToDoDAO {
     }
 
     public boolean updateToDo(ToDo toDo) {
-        return false;
+        ContentValues values = new ContentValues();
+        values.put("name", toDo.getToDoName());
+        try {
+            String[] args = { toDo.getId().toString() };
+            write.update(DBHelper.TABLE1_NAME, values, "id=?", args);
+            Log.i("INFO", "Task successfully updated.");
+        } catch (Exception e) {
+            Log.e("INFO", "Error updating task: " + e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     public boolean removeToDo(ToDo toDo) {
