@@ -1,4 +1,4 @@
-package samuel.jose.todolist;
+package samuel.jose.todolist.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +17,11 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import samuel.jose.todolist.R;
+import samuel.jose.todolist.helper.RecyclerItemClickListener;
+import samuel.jose.todolist.adapter.ToDoAdapter;
+import samuel.jose.todolist.model.ToDo;
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;

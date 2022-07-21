@@ -1,4 +1,4 @@
-package samuel.jose.todolist;
+package samuel.jose.todolist.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import samuel.jose.todolist.R;
+import samuel.jose.todolist.model.ToDo;
 
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.MyViewHolder> {
     private List<ToDo> list;

@@ -1,4 +1,4 @@
-package samuel.jose.todolist;
+package samuel.jose.todolist.model;
 
 import java.io.Serializable;
 

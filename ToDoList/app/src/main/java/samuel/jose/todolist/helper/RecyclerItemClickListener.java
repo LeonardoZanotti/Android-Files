@@ -1,4 +1,4 @@
-package samuel.jose.todolist;
+package samuel.jose.todolist.helper;
 
 import android.content.Context;
 import android.view.GestureDetector;
