@@ -49,7 +49,15 @@ public class ToDoDAO {
     }
 
     public boolean removeToDo(ToDo toDo) {
-        return false;
+        try {
+            String[] args = { toDo.getId().toString() };
+            write.delete(DBHelper.TABLE1_NAME, "id=?", args);
+            Log.i("INFO", "Task successfully deleted.");
+        } catch (Exception e) {
+            Log.e("INFO", "Error deleting task: " + e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     public List<ToDo> getAllToDos() {

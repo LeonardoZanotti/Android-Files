@@ -1,11 +1,13 @@
 package samuel.jose.todolist.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -47,7 +49,25 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onLongItemClick(View view, int position) {
-                Toast.makeText(MainActivity.this, "Remove", Toast.LENGTH_SHORT).show();
+                ToDo selectedToDo = toDoList.get(position);
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                dialog.setTitle("Remove task");
+                dialog.setMessage("The task " + selectedToDo.getToDoName() + " will be removed. Are you sure?");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ToDoDAO toDoDAO = new ToDoDAO(getApplicationContext());
+                        if (toDoDAO.removeToDo(selectedToDo)) {
+                            instantiateRecyclerToDo();
+                            Toast.makeText(MainActivity.this, "Task deleted", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(MainActivity.this, "Error deleting task", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                dialog.setNegativeButton("No", null);
+                dialog.create();
+                dialog.show();
             }
 
             @Override
