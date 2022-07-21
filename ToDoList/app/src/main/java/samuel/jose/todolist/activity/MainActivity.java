@@ -21,6 +21,7 @@ import java.util.List;
 import samuel.jose.todolist.R;
 import samuel.jose.todolist.helper.RecyclerItemClickListener;
 import samuel.jose.todolist.adapter.ToDoAdapter;
+import samuel.jose.todolist.helper.ToDoDAO;
 import samuel.jose.todolist.model.ToDo;
 
 public class MainActivity extends AppCompatActivity {
@@ -60,13 +61,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void instantiateRecyclerToDo() {
-        ToDo toDo1 = new ToDo();
-        toDo1.setToDoName("Go shopping");
-        toDoList.add(toDo1);
-
-        ToDo toDo2 = new ToDo();
-        toDo2.setToDoName("Read an android article");
-        toDoList.add(toDo2);
+        ToDoDAO toDoDAO = new ToDoDAO(getApplicationContext());
+        toDoList = toDoDAO.getAllToDos();
 
         toDoAdapter = new ToDoAdapter(toDoList);
 
