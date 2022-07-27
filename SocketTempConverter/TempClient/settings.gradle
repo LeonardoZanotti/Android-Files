@@ -1,0 +1,2 @@
+rootProject.name = "TempClient"
+include ':app'
