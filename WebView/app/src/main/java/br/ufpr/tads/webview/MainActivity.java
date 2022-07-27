@@ -21,11 +21,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Page currentPage = new Page(URL, null,null);
-        loadPage(currentPage, true);
+        currentPage = new Page(URL, null,null);
+        loadPage(currentPage, false);
     }
 
     public void loadPage(Page page, Boolean isReload) {
+        final Boolean[] shouldPush = { false };
         WebView webView = (WebView) findViewById(R.id.webview);
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progress);
         progressBar.setVisibility(View.INVISIBLE);
@@ -40,14 +41,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                if (!isReload) {
+                if (shouldPush[0] && !isReload) {
                     Page newPage = new Page(url, currentPage, null);
-                    newPage.setPreviousPage(currentPage);
-                    currentPage.setNextPage(newPage);
-                    currentPage = newPage;
-                } else {
-                    currentPage = page;
+                    currentPage = Page.pushPage(currentPage, newPage);
                 }
+                shouldPush[0] = true;
                 progressBar.setVisibility(View.INVISIBLE);
             }
 
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
     public void goBack(View view) {
         if (currentPage.getPreviousPage() != null) {
             currentPage = currentPage.getPreviousPage();
-            this.loadPage(currentPage, true);
+            this.loadPage(currentPage, false);
         }
     }
 
@@ -72,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
     public void goForward(View view) {
         if (currentPage.getNextPage() != null) {
             currentPage = currentPage.getNextPage();
-            this.loadPage(currentPage, true);
+            this.loadPage(currentPage, false);
         }
     }
 
-    public class Page {
+    public static class Page {
         public String url;
         public Page previousPage, nextPage;
 
@@ -108,6 +106,13 @@ public class MainActivity extends AppCompatActivity {
 
         public void setNextPage(Page nextPage) {
             this.nextPage = nextPage;
+        }
+
+        public static Page pushPage(Page currentPage, Page nextPage) {
+            nextPage.setPreviousPage(currentPage);
+            currentPage.setNextPage(nextPage);
+            currentPage = nextPage;
+            return currentPage;
         }
     }
 }
