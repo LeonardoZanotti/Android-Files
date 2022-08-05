@@ -1,0 +1,2 @@
+rootProject.name = "JSONCar"
+include ':app'
